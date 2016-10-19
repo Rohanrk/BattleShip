@@ -2,10 +2,29 @@ import java.util.Random;
 
 public class AIBoard extends Board {
 
+	private int prevRow;
+	private int prevCol;
+	
 	public AIBoard(String name) {
 		super(name);
 	}
 	
+	public int getPrevRow() {
+		return prevRow;
+	}
+
+	public void setPrevRow(int prevRow) {
+		this.prevRow = prevRow;
+	}
+	
+	public int getPrevCol() {
+		return prevCol;
+	}
+
+	public void setPrevCol(int prevCol) {
+		this.prevCol = prevCol;
+	}
+
 	@Override	
 	public void setShip(Ship s) {
 		

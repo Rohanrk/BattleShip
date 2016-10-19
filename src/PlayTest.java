@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Random;
 
 public class PlayTest {
 
@@ -30,10 +31,11 @@ public class PlayTest {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Player 1! Choose your name! ");
 		String firstName = input.next();
-		Board player1 = new Board(firstName);
-		player1.setBoard();
-		player1.printBoard();
+		Board player = new Board(firstName);
+		player.setBoard();
+		player.printBoard();
 		AIBoard computer = new AIBoard("AIBot");
+		takeTurn(player, computer);
 		//TODO
 		
 	}
@@ -57,20 +59,26 @@ public class PlayTest {
 	public static void takeTurn(Board player1, Board player2) {
 
 		while (!player1.isVictory() && !player2.isVictory()) {
-			
-			attack(player1, player2);
-			attack(player2, player1);
-			
+
+			if (player2 instanceof AIBoard) {
+				attack(player2, (AIBoard) player2);
+			} else {
+				attack(player1, player2);
+				attack(player2, player1);
+			}
 		}
 	}
-	
+
 	public static void attack(Board player, AIBoard bot) {
 		
 		while(!player.isVictory() && bot.isVictory()) {
 			
 			attack(player, (Board) bot); /* Safe casting here */
-			//TODO
-			//Insert Rudimentary AI code here
+			Random rand = new Random();
+			//TODO Insert Rudimentary AI code here
+			System.out.printf("%s's board:\n"
+					, player.getPlayerName());
+			player.printBoard();
 		}
 	}
 	
