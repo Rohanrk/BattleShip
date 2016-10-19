@@ -17,7 +17,7 @@ public class PlayTest {
 		if (players == 1) {
 			playSinglePlayer();
 		} else if (players == 2) {
-			playDoublePlayer();
+			playTwoPlayer();
 		} else {
 			throw new InputMismatchException("You cannot have this many "
 					+ "players");
@@ -33,16 +33,19 @@ public class PlayTest {
 		Board player1 = new Board(firstName);
 		player1.setBoard();
 		player1.printBoard();
+		AIBoard computer = new AIBoard("AIBot");
+		//TODO
+		
 	}
 	
-	public static void playDoublePlayer() {
+	public static void playTwoPlayer() {
 		
 		Scanner input = new Scanner(System.in);
 		System.out.print("Player 1! Choose your name! ");
-		String firstName = input.next();
+		String firstName = input.nextLine().trim();
 		Board player1 = new Board(firstName);
 		System.out.print("Player 2! Choose your name! ");
-		String secondName = input.next();
+		String secondName = input.nextLine().trim();
 		Board player2 = new Board(secondName);
 		player1.setBoard();
 		player2.setBoard();
@@ -58,6 +61,16 @@ public class PlayTest {
 			attack(player1, player2);
 			attack(player2, player1);
 			
+		}
+	}
+	
+	public static void attack(Board player, AIBoard bot) {
+		
+		while(!player.isVictory() && bot.isVictory()) {
+			
+			attack(player, (Board) bot); /* Safe casting here */
+			//TODO
+			//Insert Rudimentary AI code here
 		}
 	}
 	

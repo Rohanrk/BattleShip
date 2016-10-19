@@ -12,45 +12,45 @@ public class Board {
 	private Submarine submarine;
 	private Destroyer destroyer;
 	private static final int BOARD_SIZE = 10;
-
+	
 	public enum Status {
 		HIT, MISS, SHIP, EMPTY
 	}
-
+	
 	public Board(String name) {
 		board =  new Status[BOARD_SIZE][BOARD_SIZE];
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
-				board[i][j] = Status.EMPTY;
+				board[i][j] = Status.EMPTY; /* Constructor initially sets all coordinates as empty */
 			}
 		}
 		playerName = name;
-		carrier = new Carrier(0);
-		battleShip = new Battleship(0);
-		cruiser = new Cruiser(0);
-		submarine = new Submarine(0);
-		destroyer = new Destroyer(0);
-
+		carrier = new Carrier();
+		battleShip = new Battleship();
+		cruiser = new Cruiser();
+		submarine = new Submarine();
+		destroyer = new Destroyer();
+		
 	}
-
+	
 	public String getPlayerName() {
 		return playerName;
 	}
-
+	
 	public boolean isVictory() {
 		return victory;
 	}
-
+	
 	public void setVictory(Board other) {
-		if (other.isShipSunk(other.getCarrier())
-				&& other.isShipSunk(other.getBattleShip())
-				&& other.isShipSunk(other.getSubmarine())
+		if (other.isShipSunk(other.getCarrier()) 
+				&& other.isShipSunk(other.getBattleShip()) 
+				&& other.isShipSunk(other.getSubmarine()) 
 				&& other.isShipSunk(other.getCruiser())
 				&& other.isShipSunk(other.getDestroyer())) {
 			this.victory = true;
 		}
 	}
-
+	
 	public Carrier getCarrier() {
 		return carrier;
 	}
@@ -70,32 +70,32 @@ public class Board {
 	public Destroyer getDestroyer() {
 		return destroyer;
 	}
-
+	
 	public boolean isShipSunk(Ship s) {
 		if (board[s.getRootRow()][s.getRootColumn()] != Status.HIT) {
 			return false;
 		}
 		for (int i = 0; i < s.getSize(); i++) {
 			if (s.getOrientation() == 0) {
-				if (board[s.getRootRow()][s.getRootColumn() + i]
+				if (board[s.getRootRow()][s.getRootColumn() + i] 
 						!= Status.HIT) {
 					return false;
 				}
 
 			} else if (s.getOrientation() == 1) {
-				if (board[s.getRootRow() + i][s.getRootColumn()]
+				if (board[s.getRootRow() + i][s.getRootColumn()] 
 						!= Status.HIT) {
 					return false;
 				}
-
+				
 			} else if (s.getOrientation() == 2) {
-				if (board[s.getRootRow()][s.getRootColumn() - i]
+				if (board[s.getRootRow()][s.getRootColumn() - i] 
 						!= Status.HIT) {
 					return false;
 				}
-
+				
 			} else if (s.getOrientation() == 3) {
-				if (board[s.getRootRow() - i][s.getRootColumn()]
+				if (board[s.getRootRow() - i][s.getRootColumn()] 
 						!= Status.HIT) {
 					return false;
 				}
@@ -103,20 +103,22 @@ public class Board {
 		}
 		return true;
 	}
-
+	
 	public void setBoard() {
-
-		//Place ships based on UI given a root position and
-		//orientation
+		
+		/*
+		 * Place ships based on UI given a root position and
+		 * orientation
+		 */
 		this.setShip(carrier);
 		this.setShip(battleShip);
 		this.setShip(cruiser);
 		this.setShip(submarine);
 		this.setShip(destroyer);
 	}
-
+	
 	public void setShip(Ship s) {
-
+		
 		Scanner input = new Scanner(System.in);
 		System.out.printf("%s! Select the root coordinate "
 				+ "you want your %s to be placed\n"
@@ -142,7 +144,7 @@ public class Board {
 			Scanner change = new Scanner(System.in);
 			int given = change.nextInt();
 			if (given == 1) {
-
+				
 				Scanner coordinate = new Scanner(System.in);
 				System.out.printf("%s! Select the root coordinate "
 						+ "you want your %s to be placed\n"
@@ -154,9 +156,9 @@ public class Board {
 				row = parseRow(letterRow);
 				column = Integer.parseInt(coordinates.substring(1)) - 1;
 				coordinate.close();
-
+				
 			} else if (given == 2) {
-
+				
 				Scanner newInput = new Scanner(System.in);
 				System.out.println("Enter your desired orientation\n\n"
 						+ "KEY\n0 represents north to south\n"
@@ -165,19 +167,19 @@ public class Board {
 						+ "3 represents east to west\n");
 				orientation = newInput.nextInt();
 				s.setOrientation(orientation);
-
+				
 			} else {
 				throw new InputMismatchException("Improper input. Input must be 1 or 2");
 			}
 		}
 	}
-
+	
 	public boolean canSet(Ship s, int row, int column) {
-
+		
 		if (board[row][column] != Status.EMPTY) {
 			return false;
 		}
-
+		
 		if (s.getOrientation() == 0) {
 			if (column + s.getSize() <= 9) {
 				for (int i = 0; i < s.getSize(); i++) {
@@ -192,7 +194,7 @@ public class Board {
 				}
 				return true;
 			}
-
+			
 		} else if (s.getOrientation() == 2) {
 			if (column - s.getSize() >= 0) {
 				for (int i = 0; i < s.getSize(); i++) {
@@ -208,37 +210,40 @@ public class Board {
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	public void HandleAttack(int row, int column) {
-
+		
 		if (row >= BOARD_SIZE || column >= BOARD_SIZE ) {
 			throw new IllegalArgumentException("row and column must be "
 					+ "less than 10");
 		}
-
-		if (board[row][column] == Status.MISS ||
+		
+		if (board[row][column] == Status.MISS || 
 				board[row][column] == Status.HIT) {
-
+			
 			System.out.println("You've already attacked this target");
-
+			
 		}
-
+			
 		if (board[row][column] == Status.SHIP) {
-
+			
 			board[row][column] = Status.HIT;
 			System.out.println("You've hit a ship!");
-
+			
 		} else if (board[row][column] == Status.EMPTY) {
-
+			
 			board[row][column] = Status.MISS;
 			System.out.println("You have missed!");
 		}
-
+	
 	}
 
+	/* 
+	 * This method 
+	 */
 	public static int parseRow(String row) {
 
 		if (row.equalsIgnoreCase("A")) {
@@ -267,12 +272,16 @@ public class Board {
 		}
 	}
 
+	/*
+	 * There are 2 types of print methods for the board.
+	 * This print methods is for multiplayer
+	 */
 	public void printHiddenBoard() {
-
+		
 		System.out.print("KEY\n* = empty or ship\n# = hit\n% = miss\n\n");
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
-				if (board[i][j] == Status.EMPTY ||
+				if (board[i][j] == Status.EMPTY || 
 						board[i][j] == Status.SHIP) {
 					System.out.print("*");
 				} else if (board[i][j] == Status.HIT) {
@@ -286,8 +295,11 @@ public class Board {
 		System.out.println();
 	}
 
+	/*
+	 * This print method is meant for single player
+	 */
 	public void printBoard() {
-
+		
 		System.out.print("KEY\n* = empty\n! = ship\n# = hit\n% = miss\n\n");
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {

@@ -14,9 +14,8 @@ public abstract class Ship {
 	private int rootRow;
 	private int rootColumn;
 	
-	public Ship(int s, int o) {
+	public Ship(int s) {
 		size = s;
-		setOrientation(o);
 	}
 	
 	public int getSize() {
