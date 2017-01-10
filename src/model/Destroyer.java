@@ -1,8 +1,9 @@
+package model;
 
 public class Destroyer extends Ship {
 
 	private static final int DESTROYER_SIZE = 2;
-	private static final String SHIP_NAME = "Destroyer";
+	private static final String SHIP_NAME = "model.Destroyer";
 	
 	public Destroyer() {
 		super(DESTROYER_SIZE);
