@@ -1,4 +1,4 @@
 # BattleShip
-A program that simulates a model.Battleship game
+A program that simulates a Battleship game
 
 Created and written in Eclipse

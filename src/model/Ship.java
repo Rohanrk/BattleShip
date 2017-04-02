@@ -1,42 +1,45 @@
 package model;
 
-import java.util.InputMismatchException;
+public enum Ship {
 
-public abstract class Ship {
+	CARRIER5("Carrier", 5), BATTLESHIP("Battleship", 4),
+	CRUISER("Cruiser", 3), SUBMARINE("Submarine", 3),
+	DESTROYER("Destroyer", 2);
 
-	/* Size is self explanatory. Represents number of units
-	 * Orientation is taken as an int between 0-3. 
-	 * 0 represents north to south
-	 * 1 represents west to east 
-	 * 2 represents south to north
-	 * 3 represents east to west
-	 */
+	private String name;
 	private int size;
-	private int orientation;
+	private Direction orientation;
 	private int rootRow;
-	private int rootColumn;
+	private int rootCol;
+
+	public Ship(String name, int size) {
+		this.name = name;
+		this.size = size;
+	}
 	
-	public Ship(int s) {
-		size = s;
+	public Ship(String name, int size, Direction direction) {
+		this(name, size);
+		orientation = direction;
+	}
+
+	public Ship(String name, int size, Direction direction, int rootRow, int rootCol) {
+		this(name, size, direction);
+		this.rootRow = rootRow;
+		this.rootCol = rootCol;
 	}
 	
 	public int getSize() {
 		return size;
 	}
 
-	public int getOrientation() {
+	public Direction getOrientation() {
 		return orientation;
 	}
 	
-	public void setOrientation(int given) {
-		if (given >= 0 && given <= 3) {
-			orientation = given;
-		} else {
-			throw new InputMismatchException("Orientation "
-					+ "must be between 0 and 3");
-		}
+	public void setOrientation(Direction orientation) {
+		this.orientation = orientation;
 	}
-	
+
 	public int getRootRow() {
 		return rootRow;
 	}
@@ -46,13 +49,16 @@ public abstract class Ship {
 	}
 	
 	public int getRootColumn() {
-		return rootColumn;
+		return rootCol;
 	}
 	
 	public void setRootColumn(int column) {
-		rootColumn = column;
+		rootCol = column;
 	}
 	
-	public abstract String getShipName();
-	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }
